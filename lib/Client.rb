@@ -13,7 +13,7 @@ module Finnhub
     attr_reader :apikey
 
     def request(url)
-      send_url = "#{BASE_URI}/#{url}"
+      send_url = "#{BASE_URI}#{url}"
       send_url += send_url.include?("?") ? "&" : "?"
       send_url += "token=#{@apikey}"
 
@@ -23,13 +23,17 @@ module Finnhub
         puts "\nCODE: #{response.code}\n"
         puts "OUTPUT: #{response.body}\n"
       end
+
       if response.code == 200
+        data = response.body
         return data unless data[0] == "[" || data[0] == "{"
-        data = Oj.load(response.body, symbol_keys: true)
+
+        data = Oj.load(data, symbol_keys: true)
         return data
       else
         raise Finnhub::Error.new message: data, code: response.code
       end
+
     rescue Finnhub::Error => e
       raise e
     rescue StandardError => e

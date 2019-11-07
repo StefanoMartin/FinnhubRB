@@ -1,5 +1,5 @@
 module Finnhub
-  class Websocket < Fate::WebSocket::Client
+  class Websocket < Faye::WebSocket::Client
     def initialize(apikey)
       super("wss://ws.finnhub.io?token=#{apikey}")
     end

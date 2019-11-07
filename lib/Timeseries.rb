@@ -4,11 +4,17 @@ module Finnhub
       from: nil, to: nil, format: nil)
       url = "/stock/candle?symbol=#{stock.symbol}&resolution=#{resolution}"
       url += "&count=#{count}" unless count.nil?
+      from = from.to_i if from.is_a?(Time)
       url += "&from=#{from}" unless from.nil?
+      to = to.to_i if to.is_a?(Time)
       url += "&to=#{to}" unless to.nil?
       url += "&format=#{format}" unless format.nil?
       @output = client.request(url)
-      @timestamps = @output[:t].map{|t| DateTime.strptime(t.to_s,'%s')}
+      if @output.is_a?(Hash)
+        @timestamps = []
+      else
+        @timestamps = @output[:t]&.map{|t| DateTime.strptime(t.to_s,'%s')}
+      end
     end
 
     attr_reader :output, :timestamps

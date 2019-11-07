@@ -29,8 +29,11 @@ module Finnhub
       @client.request("/stock/option-chain?symbol=#{@symbol}")
     end
 
-    def peers
-      @client.request("/stock/peers?symbol=#{@symbol}")
+    def peers(plain: false)
+      output = @client.request("/stock/peers?symbol=#{@symbol}")
+      return output if plain
+
+      output.map{|o| Finnhub::Stock.new(client: @client, symbol: o)}
     end
 
     def earnings
