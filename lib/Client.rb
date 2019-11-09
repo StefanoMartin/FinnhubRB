@@ -26,10 +26,14 @@ module Finnhub
 
       if response.code == 200
         data = response.body
-        return data unless data[0] == "[" || data[0] == "{"
-
-        data = Oj.load(data, symbol_keys: true)
-        return data
+        if data[0] == "[" || data[0] == "{"
+          data = Oj.load(data, symbol_keys: true)
+          return data
+        elsif data.include?("\n")
+          return data
+        else
+          raise Finnhub::Error.new message: data, code: response.code
+        end        
       else
         raise Finnhub::Error.new message: data, code: response.code
       end

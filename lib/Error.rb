@@ -1,9 +1,9 @@
 module Finnhub
   class Error < StandardError
-    def initialize(message:, data: nil)
-      @data = data
+    def initialize(message:, code: nil)
+      @code = code
       super(message)
     end
-    attr_reader :data
+    attr_reader :code
   end
 end

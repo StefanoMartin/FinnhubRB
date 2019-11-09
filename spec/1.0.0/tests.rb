@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe "1.0.0" do
   context "Finnhub" do
     it "create a new client" do
-      @store[:client] = Finnhub::Client.new(key: @key)
+      @store[:client] = Finnhub::Client.new(key: @key, verbose: true)
       expect(@store[:client].class).to be Finnhub::Client
     end
 
@@ -75,12 +75,23 @@ describe "1.0.0" do
       expect(timeseries.low.class).to be Array
       expect(timeseries.close.class).to be Array
       expect(timeseries.volume.class).to be Array
-      expect(timeseries.status).to be "ok"
+      expect(timeseries.status).to eq "ok"
       expect(timeseries.output.class).to be Hash
 
       timeseries = @store[:stock].timeseries(resolution: 60, from: Time.now-24*30*3600, to: Time.now)
       expect(timeseries.open.class).to be Array
-      expect(timeseries.status).to be "ok"
+      expect(timeseries.status).to eq "ok"
+
+      timeseries = @store[:stock].timeseries(resolution: 60, from: Time.now-24*30*3600, to: Time.now, format: "csv")
+      expect(timeseries.output).to be String
+
+      error = nil
+      begin
+        @store[:stock].timeseries(resolution: 60, from: Time.now-24*30*3600, to: Time.now, format: "wrong")
+      rescue Finnhub::Error => e
+        error = e
+      end
+      expect(error.class).to be Finnhub::Error
     end
   end
 end
