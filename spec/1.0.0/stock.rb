@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 describe "1.0.0" do
-  context "Finnhub" do
+  context "Stock" do
     it "create a new client" do
       @store[:client] = Finnhub::Client.new(key: @key, verbose: true)
       expect(@store[:client].class).to be Finnhub::Client
@@ -83,7 +83,7 @@ describe "1.0.0" do
       expect(timeseries.status).to eq "ok"
 
       timeseries = @store[:stock].timeseries(resolution: 60, from: Time.now-24*30*3600, to: Time.now, format: "csv")
-      expect(timeseries.output).to be String
+      expect(timeseries.output.class).to be String
 
       error = nil
       begin

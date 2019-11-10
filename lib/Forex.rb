@@ -23,8 +23,8 @@ module Finnhub
 
   class Forex_Symbol
     include Finnhub::Analysis
-    
-    def initialize(client:, exchange:, description: nil, hasWM: nil,
+
+    def initialize(client:, exchange: nil, description: nil, hasWM: nil,
       displaySymbol: nil, symbol:)
       @client = client
       @exchange = exchange
@@ -49,7 +49,11 @@ module Finnhub
       url += "&to=#{to}" unless to.nil?
       url += "&format=#{format}" unless format.nil?
       @output = client.request(url)
-      @timestamps = @output[:t].map{|t| DateTime.strptime(t.to_s,'%s')}
+      if @output.is_a?(Hash) && @output[:s] == "ok"
+        @timestamps = @output[:t]&.map{|t| DateTime.strptime(t.to_s,'%s')}
+      else
+        @timestamps = []
+      end
     end
   end
 end

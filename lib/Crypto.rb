@@ -49,7 +49,11 @@ module Finnhub
       url += "&to=#{to}" unless to.nil?
       url += "&format=#{format}" unless format.nil?
       @output = client.request(url)
-      @timestamps = @output[:t].map{|t| DateTime.strptime(t.to_s,'%s')}
+      if @output.is_a?(Hash) && @output[:s] == "ok"
+        @timestamps = @output[:t]&.map{|t| DateTime.strptime(t.to_s,'%s')}
+      else
+        @timestamps = []
+      end
     end
   end
 end

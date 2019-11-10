@@ -10,7 +10,7 @@ module Finnhub
       url += "&to=#{to}" unless to.nil?
       url += "&format=#{format}" unless format.nil?
       @output = client.request(url)
-      if @output.is_a?(Hash)
+      if @output.is_a?(Hash) && @output[:s] == "ok"
         @timestamps = @output[:t]&.map{|t| DateTime.strptime(t.to_s,'%s')}
       else
         @timestamps = []
@@ -20,32 +20,35 @@ module Finnhub
     attr_reader :output, :timestamps
 
     def open
-      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
-      @timestamps.zip(@output[:o])
+      operation(:o)
     end
 
     def high
-      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
-      @timestamps.zip(@output[:h])
+      operation(:h)
     end
 
     def low
-      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
-      @timestamps.zip(@output[:l])
+      operation(:l)
     end
 
     def close
-      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
-      @timestamps.zip(@output[:c])
+      operation(:c)
     end
 
     def volume
-      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
-      @timestamps.zip(@output[:v])
+      operation(:v)
     end
 
     def status
       @output[:s]
+    end
+
+    private
+
+    def operation(type)
+      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
+      return [] if @output[type].nil?
+      @timestamps.zip(@output[type])
     end
   end
 end
