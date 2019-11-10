@@ -65,5 +65,20 @@ describe "1.0.0" do
       end
       expect(error.class).to be Finnhub::Error
     end
+
+    it "can retrieve pattern" do
+      output = @store[:crypto_symbol].pattern
+      expect(output[:points][0].key?(:symbol)).to eq true
+    end
+
+    it "can retrieve support_resistance" do
+      output = @store[:crypto_symbol].support_resistance
+      expect(output.key?(:levels)).to be true
+    end
+
+    it "can retrieve techinical_indicators" do
+      output = @store[:crypto_symbol].techinical_indicators
+      expect(output.key?(:technicalAnalysis)).to be true
+    end
   end
 end

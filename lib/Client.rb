@@ -33,7 +33,7 @@ module Finnhub
           return data
         else
           raise Finnhub::Error.new message: data, code: response.code
-        end        
+        end
       else
         raise Finnhub::Error.new message: data, code: response.code
       end
