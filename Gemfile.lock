@@ -46,7 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print (>= 1.7)
-  eventmachine
+  eventmachine (= 1.2.7)
   faye-websocket (>= 0.10.9)
   httparty (>= 0.17.1)
   oj (>= 3.9.2)

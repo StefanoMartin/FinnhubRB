@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "httparty", ">= 0.17.1"
 gem "oj", ">= 3.9.2"
 gem "faye-websocket", ">= 0.10.9"
+gem "eventmachine", "1.2.7"
 
 group :development, :test do
   gem "pry-byebug"
