@@ -10,7 +10,9 @@ module Finnhub
         symbol = symbol.symbol
       end
 
-      send(Oj.dump({"type": "subscribe", "symbol": symbol}))
+      send(Oj.dump(
+        {"type": "subscribe", "symbol": symbol},
+        mode: :json))
     end
 
     def unsubscribe(symbol)
@@ -19,7 +21,9 @@ module Finnhub
         symbol = symbol.symbol
       end
 
-      send(Oj.dump({"type": "unsubscribe", "symbol": symbol}))
+      send(Oj.dump(
+        {"type": "unsubscribe", "symbol": symbol},
+        mode: :json))
     end
   end
 end

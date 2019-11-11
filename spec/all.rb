@@ -1,0 +1,5 @@
+require_relative "1.0.0/crypto"
+require_relative "1.0.0/forex"
+require_relative "1.0.0/other"
+require_relative "1.0.0/stock"
+require_relative "1.0.0/websocket"
