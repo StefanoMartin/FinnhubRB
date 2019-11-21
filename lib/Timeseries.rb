@@ -1,6 +1,6 @@
 module Finnhub
   class Timeseries
-    def initialize(client:, stock:, resolution: "D", count: nil,
+    def initialize(client:, stock:, resolution: "D", count: 100,
       from: nil, to: nil, format: nil)
       url = "/stock/candle?symbol=#{stock.symbol}&resolution=#{resolution}"
       url += "&count=#{count}" unless count.nil?
@@ -40,6 +40,7 @@ module Finnhub
     end
 
     def status
+      raise Finnhub::Error message: "Output is not a hash" unless @output.is_a?(Hash)
       @output[:s]
     end
 

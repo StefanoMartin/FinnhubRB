@@ -76,8 +76,8 @@ describe "1.0.0" do
       expect(output.key?(:levels)).to be true
     end
 
-    it "can retrieve techinical_indicators" do
-      output = @store[:forex_symbol].techinical_indicators
+    it "can retrieve technical_indicators" do
+      output = @store[:forex_symbol].technical_indicators
       expect(output.key?(:technicalAnalysis)).to be true
     end
   end

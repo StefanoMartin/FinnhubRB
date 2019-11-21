@@ -8,7 +8,7 @@ module Finnhub
       @client.request("/scan/support-resistance?symbol=#{@symbol}&resolution=#{resolution}")
     end
 
-    def techinical_indicators(resolution: "D")
+    def technical_indicators(resolution: "D")
       @client.request("/scan/technical-indicator?symbol=#{@symbol}&resolution=#{resolution}")
     end
   end

@@ -27,7 +27,7 @@ describe "1.0.0" do
       expect(mergers[0][:targetNation]).to eq @store[:country]
     end
 
-    it "can retrieve merge countries" do
+    it "can retrieve economic codes" do
       output = @store[:client].economic_codes(plain: true)
       expect(output.size).to be > 100
       @store[:economic_code] = output[0][0]
@@ -36,7 +36,7 @@ describe "1.0.0" do
       expect(output[0].class).to be Finnhub::Economic_Code
     end
 
-    it "can retrieve merge countries" do
+    it "can retrieve economic codes" do
       economic = @store[:client].economic_code(code: @store[:economic_code])
       output = economic.data(plain: true)
       expect(output[0][0].class).to eq String

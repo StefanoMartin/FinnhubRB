@@ -1,4 +1,4 @@
-module Finnhub
+ module Finnhub
   class Crypto_Exchange
     def initialize(client:, name:)
       @client = client
@@ -36,11 +36,11 @@ module Finnhub
     attr_reader :client, :exchange, :hashWM, :displaySymbol, :symbol
 
     def timeseries(**args)
-      Finnhub::Forex_Timeseries.new(client: @client, symbol: @symbol, **args)
+      Finnhub::Crypto_Timeseries.new(client: @client, symbol: @symbol, **args)
     end
   end
 
-  class Forex_Timeseries < Finnhub::Timeseries
+  class Crypto_Timeseries < Finnhub::Timeseries
     def initialize(client:, symbol:, resolution: "D", count: nil,
       from: nil, to: nil, format: nil)
       url = "/crypto/candle?symbol=#{symbol}&resolution=#{resolution}"
