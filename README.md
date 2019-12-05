@@ -1,4 +1,4 @@
-FinnhubRB
+FinnhubRB [![Gem Version](https://badge.fury.io/rb/finnhubrb.svg)](https://badge.fury.io/rb/finnhubrb)
 =========================================================
 
 [Finnhub](https://finnhub.io/) is an API for retrieving Stock
