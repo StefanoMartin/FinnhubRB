@@ -135,9 +135,9 @@ The methods "open", "high", "low", "close", "volume" and "status" will not work 
 (PREMIUM) To retrieve transcripts you can use:
 
 ``` ruby
-  stock.stock_exchanges # Retrieve the available stock exchanges on Finnhub (Finnhub::Stock_Exchange instances)
-  client.stock_exchanges(plain: true) # As above, but it returns simply the output of the request
-  stock_exchange = client.stock_exchanges(name: "NAME_CRYPTO_EXCHANGE") # Create a single instance of Finnhub::Stock_Exchange
+client.transcripts # Retrieve the available transcripts on Finnhub (Finnhub::Transcript instances)
+client.transcripts(plain: true) # As above, but it returns simply the output of the request
+client.transcripts[0].transcript # Retrieve the specific transcript
 ```
 
 ## Crypto
@@ -145,9 +145,9 @@ The methods "open", "high", "low", "close", "volume" and "status" will not work 
 To analyse a crypto currency you should start by choosing which crypto exchange you want to analyse.
 
 ``` ruby
-client.transcripts # Retrieve the available transcripts on Finnhub (Finnhub::Transcript instances)
-client.transcripts(plain: true) # As above, but it returns simply the output of the request
-client.transcripts[0].transcript # Retrieve the specific transcript
+client.crypto_exchanges # Retrieve the available crypto exchanges on Finnhub (Finnhub::Crypto_Exchange instances)
+client.crypto_exchanges(plain: true) # As above, but it returns simply the output of the request
+crypto_exchange = client.crypto_exchange(name: "NAME_CRYPTO_EXCHANGE") # Create a single instance of Finnhub::Crypto_Exchange
 ```
 
 After that you can choose, in that crypto exchange which symbol you want to check.
