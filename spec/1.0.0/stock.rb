@@ -44,7 +44,7 @@ describe "1.0.0" do
 
     it "can retrieve a peers" do
       output = @store[:stock].peers(plain: true)
-      expect(output).to include "ALOT"
+      expect(output).to include "AAPL"
 
       output2 = @store[:stock].peers[0].profile
       expect(output2[:ticker]).to eq output[0]
@@ -69,7 +69,7 @@ describe "1.0.0" do
     end
 
     it "can retrieve timeseries" do
-      timeseries = @store[:stock].timeseries(count: 100)
+      timeseries = @store[:stock].timeseries(count: 100, adjusted: true)
       expect(timeseries.open.class).to be Array
       expect(timeseries.high.class).to be Array
       expect(timeseries.low.class).to be Array

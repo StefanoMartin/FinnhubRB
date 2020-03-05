@@ -8,6 +8,7 @@ RSpec.configure do |config|
 	config.before(:all) do
 		val = YAML.load_file("#{__dir__}/config.yml")
     @key = val["key"]
+		@skip_premium = val["skip_premium"].nil? ? true : val["skip_premium"]
     @store = {}
 	end
 end

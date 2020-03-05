@@ -48,6 +48,13 @@ module Finnhub
       Finnhub::Websocket.new(@apikey)
     end
 
+    def stock_exchanges(plain: false)
+      output = request("/stock/exchange")
+      return output if plain
+
+      output.map{|o| Finnhub::Stock_Exchange.new(client: self, code: o[:code], hash: o)}
+    end
+
     def stock(symbol:)
       Finnhub::Stock.new(client: self, symbol: symbol)
     end

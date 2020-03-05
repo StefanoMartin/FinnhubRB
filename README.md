@@ -22,7 +22,7 @@ Then run "rspec spec/test_all.rb".
 
 ## Support
 
-* Without a premium account, testing is hard and I could have missed something. Any bug, suggestions and improvements are more than welcome. Please do not be shy to create issues or pull requests.
+* Without a premium account, testing is hard and I could have missed something. Any bug, suggestions and improvements are more than welcome. Please do not be shy to create issues or pull requests. Premium features are implemented but untested.
 * This is a personal project, any stars for giving your support will make a man happy.
 
 ## Client
@@ -44,24 +44,49 @@ setup verbose equal to true.
 
 ## Stock
 
-Finnhub::Stock is used to manage a stock class.
-To create a new Stock class you can use a client.
+To analyse a stock you can start by choosing which stock exchange you want to analyse.
+
+``` ruby
+client.stock_exchanges # Retrieve the available stock exchanges on Finnhub (Finnhub::Stock_Exchange instances)
+client.stock_exchanges(plain: true) # As above, but it returns simply the output of the request
+stock_exchange = client.stock_exchanges(name: "NAME_CRYPTO_EXCHANGE") # Create a single instance of Finnhub::Stock_Exchange
+```
+
+After that you can choose in that crypto exchange which symbol you want to check.
+
+``` ruby
+stock_exchange.symbols # Retrieve the available stock symbols on the chosen stock exchange (Finnhub::Stock instances)
+stock_exchange.symbols(plain: true) # As above, but it returns simply the output of the request
+```
+
+In alternative you can create a stock instance directly:.
 
 ``` ruby
 stock = client.stock symbol: "AAPL"
 ```
 
+Finnhub::Stock is used to manage a stock class.
 Several methods are available under this class:
 
 ``` ruby
   stock.symbol # Return the symbol
   stock.profile # Retrieve profile of the stock
+  stock.profile(isin: "US5949181045") # Retrieve profile of the stock by its isin
+  stock.profile(cusip: "023135106") # Retrieve profile of the stock by its cusip
+  stock.profile # Retrieve profile of the stock
   stock.ceo_compensation # Retrieve compensation of the stock's CEO
+  stock.executive # Retrieve list of company's executives
   stock.recommendation # Retrieve recommendation about this stock
   stock.price_target # Retrieve price target about this stock
+  stock.upgrade_downgrade # Retrieve latest stock upgrade and downgrade
   stock.option_chain # Retrieve option chain about this stock
   stock.earnings # Retrieve earnings about this stock
+  stock.metrics # Retrieve key metrics
+  stock.investors # Retrieve full list of investors
+  stock.funds # Retrieve list of fund investors
+  stock.financials # (PREMIUM) Retrieve standardized balances sheet
   stock.news # Retrieve news about this stock (only US)
+  stock.major_development # Retrieve major development
   stock.sentiment # Retrieve social sentiment about this stock (only US)
   stock.peers(plain: true) # Retrieve peers company similar to the one chosen
   stock.peers # Like the previous one, but the results are Finnhub::Stock instances
@@ -77,6 +102,7 @@ To create a timeseries you can use:
   stock.timeseries(resolution: "D") # Resolution is daily "D", alternative are 1, 5, 15, 30, 60, D, W, M) where the numeric one are for minutes (default resolution is "D")
   stock.timeseries(from: Time.now-24*30*3600, to: Time.now) # Fetch from a date to another date (default from: nil, to: nil)
   stock.timeseries(format: "json") # Return the output in json or in csv (default format: "json")
+  stock.timeseries(adjusted: true) # Return adjusted data (default false)
 ```
 
 Remember count and from/to are exclusive. If you use one, you cannot use the other two.
@@ -85,7 +111,7 @@ The methods "open", "high", "low", "close", "volume" and "status" will not work 
 ``` ruby
   timeseries = stock.timeseries(from: Time.now-24*30*3600, to: Time.now, resolution: 60)
   timeseries.output # Return output obtained from the request
-  timeseris.timestamps # Return timestamps obtained from the request
+  timeseries.timestamps # Return timestamps obtained from the request
   timeseries.open # Return open obtained from the request  
   timeseries.low # Return low obtained from the request
   timeseries.close # Return close obtained from the request
@@ -93,14 +119,35 @@ The methods "open", "high", "low", "close", "volume" and "status" will not work 
   timeseries.status # Return status obtained from the request  
 ```
 
+
+(PREMIUM) To manage tick data use:
+
+``` ruby
+  tick = stock.tick(from: Time.now-24*30*3600, to: Time.now) # Create stick data
+  tick.output # Return output obtained from the request
+  tick.timestamps # Return timestamps obtained from the request
+  tick.price  # Return price  obtained from the request
+  tick.volume # Return volume obtained from the request
+  tick.status # Return status obtained from the request  
+```
+
+
+(PREMIUM) To retrieve transcripts you can use:
+
+``` ruby
+  stock.stock_exchanges # Retrieve the available stock exchanges on Finnhub (Finnhub::Stock_Exchange instances)
+  client.stock_exchanges(plain: true) # As above, but it returns simply the output of the request
+  stock_exchange = client.stock_exchanges(name: "NAME_CRYPTO_EXCHANGE") # Create a single instance of Finnhub::Stock_Exchange
+```
+
 ## Crypto
 
 To analyse a crypto currency you should start by choosing which crypto exchange you want to analyse.
 
 ``` ruby
-client.crypto_exchanges # Retrieve the available crypto exchanges on Finnhub (Finnhub::Crypto_Exchange instances)
-client.crypto_exchanges(plain: true) # As above, but it returns simply the output of the request
-crypto_exchange = client.crypto_exchange(name: "NAME_CRYPTO_EXCHANGE") # Create a single instance of Finnhub::Crypto_Exchange
+client.transcripts # Retrieve the available transcripts on Finnhub (Finnhub::Transcript instances)
+client.transcripts(plain: true) # As above, but it returns simply the output of the request
+client.transcripts[0].transcript # Retrieve the specific transcript
 ```
 
 After that you can choose, in that crypto exchange which symbol you want to check.
@@ -175,7 +222,7 @@ Furthermore you can create a timeseries with the same logic used for Stock times
 
 ## Merge
 
-You can retrieve information about company that are merging in relation of a given country.
+(PREMIUM) You can retrieve information about company that are merging in relation of a given country.
 
 ``` ruby
 client.merge_countries # Retrieve the available merge countries on Finnhub (Finnhub::Merge_Country instances)

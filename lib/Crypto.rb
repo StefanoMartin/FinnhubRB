@@ -1,4 +1,4 @@
- module Finnhub
+module Finnhub
   class Crypto_Exchange
     def initialize(client:, name:)
       @client = client
