@@ -8,7 +8,7 @@ on the [HTTP API of Finnhub](https://finnhub.io/docs/api).
 
 To install FinnhubRB: `gem install finnhubrb`
 
-To use it in your application: `require "finnhubrb"`
+To use it in your application: `require "finnhub"`
 
 ## How to test
 
