@@ -12,13 +12,20 @@ module Finnhub
     attr_accessor :verbose
     attr_reader :apikey
 
-    def request(url)
+    def request(url, method: :get, body: nil)
       send_url = "#{BASE_URI}#{url}"
       send_url += send_url.include?("?") ? "&" : "?"
       send_url += "token=#{@apikey}"
 
-      puts "\nGET #{send_url}\n" if @verbose
-      response = HTTParty.get(send_url)
+      case method
+      when :get
+        puts "\nGET #{send_url}\n" if @verbose
+        response = HTTParty.get(send_url)
+      when :post
+        puts "\nPOST #{send_url}, body: #{body}\n" if @verbose
+        response = HTTParty.post(send_url, body: Oj.dump(body, mode: :json))
+      end
+
       if @verbose
         puts "\nCODE: #{response.code}\n"
         puts "OUTPUT: #{response.body}\n"
@@ -46,6 +53,17 @@ module Finnhub
 
     def websocket
       Finnhub::Websocket.new(@apikey)
+    end
+
+    def webhook
+      Finnhub::Webhook.new(client: self)
+    end
+
+    def webhooks(plain: false)
+      output = request("/webhook/list")
+      return output if plain
+
+      output.map{|o| Finnhub::Webhook.new(client: self, id: o[:id], hash: o)}
     end
 
     def stock_exchanges(plain: false)
@@ -102,12 +120,16 @@ module Finnhub
       output = request("/economic/code")
       return output if plain
 
-      output.map{|o| Finnhub::Economic_Code.new(client: self, code: o[0], description: o[1])}
+      output.map{|o| Finnhub::Economic_Code.new(client: self, code: o[:code], hash: o)}
     end
 
-    def economic_code(code:, description: nil)
+    def economic_code(code:, hash: nil)
       Finnhub::Economic_Code.new(client: self, code: code,
-        description: description)
+        hash: hash)
+    end
+
+    def covid
+      request("/covid19/us")
     end
   end
 end

@@ -70,10 +70,9 @@ Several methods are available under this class:
 
 ``` ruby
   stock.symbol # Return the symbol
-  stock.profile # Retrieve profile of the stock
-  stock.profile(isin: "US5949181045") # Retrieve profile of the stock by its isin
-  stock.profile(cusip: "023135106") # Retrieve profile of the stock by its cusip
-  stock.profile # Retrieve profile of the stock
+  stock.profile # (PREMIUM) Retrieve profile of the stock
+  stock.profile(isin: "US5949181045") # (PREMIUM) Retrieve profile of the stock by its isin
+  stock.profile(cusip: "023135106") # (PREMIUM) Retrieve profile of the stock by its cusip
   stock.ceo_compensation # Retrieve compensation of the stock's CEO
   stock.executive # Retrieve list of company's executives
   stock.recommendation # Retrieve recommendation about this stock
@@ -92,7 +91,12 @@ Several methods are available under this class:
   stock.peers # Like the previous one, but the results are Finnhub::Stock instances
   stock.pattern # Retrieve pattern
   stock.support_resistance # Retrieve support resistance
-  stock.technical_indicators # Retrieve techinical indicators
+  stock.technical_indicators # Retrieve technical indicators
+  stock.revenue_estimate # Retrieve revenue estimate
+  stock.earnings_estimate  # Retrieve earnings estimate
+  stock.earnings_calendar # Retrieve earnings calendar (you can add from and to)
+  stock.dividends(from: Time.now-24*30*3600, to: Time.now) # Retrieve dividends
+  stock.splits(from: Time.now-24*30*3600, to: Time.now) # Retrieve splits
 ```
 
 To create a timeseries you can use:
@@ -138,6 +142,19 @@ The methods "open", "high", "low", "close", "volume" and "status" will not work 
 client.transcripts # Retrieve the available transcripts on Finnhub (Finnhub::Transcript instances)
 client.transcripts(plain: true) # As above, but it returns simply the output of the request
 client.transcripts[0].transcript # Retrieve the specific transcript
+```
+
+To handle indicators you can do:
+``` ruby
+  timeseries = stock.indicator(from: Time.now-24*30*3600, to: Time.now, resolution: 60, indicator: "sma", args: {timeperiod: 3})
+  timeseries.sma # Return technical values (in this case is sma since the indicator)
+  timeseries.output # Return output obtained from the request
+  timeseries.timestamps # Return timestamps obtained from the request
+  timeseries.open # Return open obtained from the request  
+  timeseries.low # Return low obtained from the request
+  timeseries.close # Return close obtained from the request
+  timeseries.volume # Return volume obtained from the request
+  timeseries.status # Return status obtained from the request  
 ```
 
 ## Crypto
@@ -278,6 +295,26 @@ websocket.unsubscribe("AAPL") # Unubscribe to a stock
 ```
 
 The symbol under subscribe/unsubscribe can be a string of a stock, a crypto_symbol or a forex_symbol. Or in alternative can be a Finnhub::Stock, Finnhub::Crypto_Symbol, or a Finnhub::Forex_Symbol instance.
+
+# Webhook
+
+You can manage the webhook in the following way.
+
+``` ruby
+webhook = client.webhook # Instantiate a webhook
+webhook.create(body: {'event': 'earnings', 'symbol': 'AAPL'}) # Create a new webhook
+webhook.id #Retrieve id of the webhook
+client.webhooks # List webhooks
+client.webhooks(plain: true)  # As above, but it returns simply the output of the request
+webhook.delete # Delete webhook
+
+```
+
+## Other
+
+``` ruby
+client.covid # Retrieve United States Covid-19 info
+```
 
 ## Errors
 

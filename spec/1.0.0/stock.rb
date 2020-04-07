@@ -13,6 +13,7 @@ describe "1.0.0" do
     end
 
     it "can retrieve a profile" do
+      skip "Premium" if @skip_premium
       output = @store[:stock].profile
 
       expect(output[:ticker]).to eq "AAPL"
@@ -45,9 +46,6 @@ describe "1.0.0" do
     it "can retrieve a peers" do
       output = @store[:stock].peers(plain: true)
       expect(output).to include "AAPL"
-
-      output2 = @store[:stock].peers[0].profile
-      expect(output2[:ticker]).to eq output[0]
     end
 
     it "can retrieve a earnings" do
@@ -59,7 +57,7 @@ describe "1.0.0" do
     it "can retrieve a news" do
       output = @store[:stock].news
 
-      expect(output[0][:related]).to eq "AAPL"
+      expect(output[0][:related]).to include "AAPL"
     end
 
     it "can retrieve a sentiment" do

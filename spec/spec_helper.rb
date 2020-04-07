@@ -1,7 +1,7 @@
 require "rspec"
 require "pry-byebug"
 require "yaml"
-require_relative "../lib/finnhub"
+require "finnhub"
 
 RSpec.configure do |config|
 	config.color = true

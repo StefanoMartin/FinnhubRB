@@ -1,12 +1,12 @@
 module Finnhub
   class Economic_Code
-    def initialize(client:, code:, description:)
+    def initialize(client:, code:, hash:)
       @client = client
       @code = code
-      @description = description
+      @hash = hash
     end
 
-    attr_reader :code, :description
+    attr_reader :code, :hash
 
     def data(plain: false)
       output = @client.request("/economic?code=#{@code}")

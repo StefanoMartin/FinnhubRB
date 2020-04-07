@@ -116,12 +116,52 @@ module Finnhub
       @client.request("/news/#{@symbol}")
     end
 
-    def major_development
-      @client.request("/major-development?symbol=#{@symbol}")
+    def major_development(from: nil, to: nil)
+      url = "/major-development?symbol=#{@symbol}"
+      from = from.to_date.to_s if from.is_a?(Time)
+      url += "&from=#{from}" unless from.nil?
+      to = to.to_date.to_s if to.is_a?(Time)
+      url += "&to=#{to}" unless to.nil?
+      @client.request(url)
     end
 
     def sentiment
       @client.request("/news-sentiment?symbol=#{@symbol}")
+    end
+
+    def revenue_estimate
+      @client.request("/stock/revenue-estimate?symbol=#{@symbol}")
+    end
+
+    def earnings_estimate
+      @client.request("/stock/eps-estimate?symbol=#{@symbol}")
+    end
+
+    def earnings_calendar(from: nil, to: nil)
+      url = "/calendar/earnings?symbol=#{@symbol}"
+      from = from.to_date.to_s if from.is_a?(Time)
+      url += "&from=#{from}" unless from.nil?
+      to = to.to_date.to_s if to.is_a?(Time)
+      url += "&to=#{to}" unless to.nil?
+      @client.request(url)
+    end
+
+    def dividends(from:, to:)
+      url = "/stock/dividend?symbol=#{@symbol}"
+      from = from.to_date.to_s if from.is_a?(Time)
+      url += "&from=#{from}"
+      to = to.to_date.to_s if to.is_a?(Time)
+      url += "&to=#{to}"
+      @client.request(url)
+    end
+
+    def splits(from:, to:)
+      url = "/stock/split?symbol=#{@symbol}"
+      from = from.to_date.to_s if from.is_a?(Time)
+      url += "&from=#{from}"
+      to = to.to_date.to_s if to.is_a?(Time)
+      url += "&to=#{to}"
+      @client.request(url)
     end
 
     def transcripts(plain: false)
@@ -138,6 +178,10 @@ module Finnhub
 
     def tick(**args)
       Finnhub::Tick.new(client: @client, stock: self, **args)
+    end
+
+    def indicator(**args)
+      Finnhub::Indicator.new(client: @client, stock: self, **args)
     end
   end
 end

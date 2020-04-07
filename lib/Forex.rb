@@ -38,6 +38,7 @@ module Finnhub
     def timeseries(**args)
       Finnhub::Forex_Timeseries.new(client: @client, symbol: @symbol, **args)
     end
+    alias :candles :timeseries
   end
 
   class Forex_Timeseries < Finnhub::Timeseries
@@ -45,7 +46,9 @@ module Finnhub
       from: nil, to: nil, format: nil)
       url = "/forex/candle?symbol=#{symbol}&resolution=#{resolution}"
       url += "&count=#{count}" unless count.nil?
+      from = from.to_i if from.is_a?(Time)
       url += "&from=#{from}" unless from.nil?
+      to = to.to_i if to.is_a?(Time)
       url += "&to=#{to}" unless to.nil?
       url += "&format=#{format}" unless format.nil?
       @output = client.request(url)

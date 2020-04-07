@@ -22,6 +22,7 @@ describe "1.0.0" do
     end
 
     it "can retrieve merge countries" do
+      skip "Premium" if @skip_premium
       country = @store[:client].merge_country(country: @store[:country])
       mergers = country.merger
       expect(mergers[0][:targetNation]).to eq @store[:country]
@@ -30,7 +31,7 @@ describe "1.0.0" do
     it "can retrieve economic codes" do
       output = @store[:client].economic_codes(plain: true)
       expect(output.size).to be > 100
-      @store[:economic_code] = output[0][0]
+      @store[:economic_code] = output[0][:code]
 
       output = @store[:client].economic_codes
       expect(output[0].class).to be Finnhub::Economic_Code

@@ -9,8 +9,10 @@ module Finnhub
 
     def merger(from: nil, to: nil)
       url = "/merger?country=#{@country}"
-      url += "&from=#{from}" unless from.nil?
-      url += "&to=#{to}" unless to.nil?
+      from = from.to_date.to_s if from.is_a?(Time)
+      url += "&from=#{from}"
+      to = to.to_date.to_s if to.is_a?(Time)
+      url += "&to=#{to}"
       @client.request(url)
     end
   end
