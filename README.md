@@ -1,6 +1,10 @@
 FinnhubRB [![Gem Version](https://badge.fury.io/rb/finnhubrb.svg)](https://badge.fury.io/rb/finnhubrb)
 =========================================================
 
+# :loudspeaker: Caution
+
+04-05-2020 - This library was created for fun. However I was informed that that Finnhub.io is currently under investigation for fraudulent actions. To avoid any problematic this repo will be archived.
+
 [Finnhub](https://finnhub.io/) is an API for retrieving Stock
 market data in JSON or CSV format.
 FinnhubRB is a wrapper Gem to use Finnhub with Ruby. FinnhubRB is based
