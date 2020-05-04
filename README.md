@@ -3,7 +3,7 @@ FinnhubRB [![Gem Version](https://badge.fury.io/rb/finnhubrb.svg)](https://badge
 
 # :loudspeaker: Caution
 
-04-05-2020 - This library has been achiveved.
+04-05-2020 - This library has been archived.
 
 [Finnhub](https://finnhub.io/) is an API for retrieving Stock
 market data in JSON or CSV format.
